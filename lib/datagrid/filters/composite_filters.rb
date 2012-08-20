@@ -13,20 +13,20 @@ module Datagrid
       module ClassMethods
 
 
-        def date_range_filters(field, from_name = :"from_#{field}", to_name = :"to_#{field}")
-          filter(from_name, :date) do |date|
+        def date_range_filters(field, from_options = {}, to_options = {})
+          filter(from_options[:name] || :"from_#{field.to_s.tr('.', '_')}", :date, from_options) do |date|
             self.scoped(:conditions => ["#{field} >= ?", date])
           end
-          filter(to_name, :date) do |date|
+          filter(to_options[:name] || :"to_#{field.to_s.tr('.', '_')}", :date, to_options) do |date|
             self.scoped(:conditions => ["#{field} <= ?", date])
           end
         end
 
-        def integer_range_filters(field, from_name = :"from_#{field}", to_name = :"to_#{field}")
-          filter(from_name, :integer) do |value|
+        def integer_range_filters(field, from_options = {}, to_options = {})
+          filter(from_options[:name] || :"from_#{field.to_s.tr('.', '_')}", :integer, from_options) do |value|
             self.scoped(:conditions => "#{field} >= #{value}")
           end
-          filter(to_name, :integer) do |value|
+          filter(to_options[:name] || :"to_#{field.to_s.tr('.', '_')}", :integer, to_options) do |value|
             self.scoped(:conditions => "#{field} <= #{value}")
           end
         end
